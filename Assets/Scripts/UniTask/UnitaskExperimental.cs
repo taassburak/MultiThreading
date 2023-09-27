@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -25,20 +26,28 @@ public class UnitaskExperimental : MonoBehaviour
     //    _cancellationTokenSource.Cancel();
     //}
 
-    private void OnDestroy()
+    //private void OnDestroy()
+    //{
+    //    _cancellationTokenSource.Dispose();
+    //}
+
+
+    private async Task CancellationTest()
     {
-        _cancellationTokenSource.Dispose();
+        Debug.Log("CancellationTest");
+        await Task.Delay(3000);
     }
+
     private async UniTaskVoid Start()
     {
         //await TimeOut();
-        
+
         List<UniTask> uniTasks = new List<UniTask>();
 
-        var cts = new CancellationTokenSource();
+        //var cts = new CancellationTokenSource();
 
-        _cancellationTokenSource = cts;
-        
+        //_cancellationTokenSource = cts;
+
         //var realLocal = GetClean();
         uniTasks.Add(FirstUniTask());
         uniTasks.Add(SecondUniTask());
@@ -48,21 +57,19 @@ public class UnitaskExperimental : MonoBehaviour
         await UniTask.WhenAll(uniTasks);
         Debug.Log("all tasks are completed");
 
-        _cancellationTokenSource.Dispose();
+        //_cancellationTokenSource.Dispose();
     }
 
     async UniTask FirstUniTask()
     {
         Debug.Log("FirstTask");
-        await UniTask.Delay(1000);
-        Debug.Log("FirstTaskCompleted");
-        await UniTask.Delay(5000);
+        await UniTask.Delay(3000);
     }
 
     async UniTask SecondUniTask()
     {
         Debug.Log("SecondTask");
-        await UniTask.Delay(1000);
+        await UniTask.Delay(3000);
     }
 
     private async UniTaskVoid Update()
